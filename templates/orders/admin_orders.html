@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Manage Orders</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f5f7f9;
+        color: #222;
+    }
+
+    .header {
+        background: #198754;
+        color: white;
+        padding: 20px;
+    }
+
+    .header h1 {
+        margin: 0;
+    }
+
+    .container {
+        max-width: 1600px;
+        margin: 25px auto;
+        padding: 0 15px;
+    }
+
+    .filter-box {
+        background: white;
+        padding: 20px;
+        border-radius: 14px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, .07);
+        margin-bottom: 20px;
+    }
+
+    .filters {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr auto;
+        gap: 10px;
+    }
+
+    input,
+    select {
+        width: 100%;
+        padding: 11px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 14px;
+    }
+
+    button {
+        border: none;
+        background: #198754;
+        color: white;
+        padding: 11px 18px;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .table-box {
+        background: white;
+        border-radius: 14px;
+        padding: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, .07);
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 1100px;
+    }
+
+    th,
+    td {
+        padding: 13px;
+        border-bottom: 1px solid #eee;
+        text-align: left;
+        vertical-align: middle;
+    }
+
+    th {
+        background: #f8f9fa;
+        white-space: nowrap;
+    }
+
+    .order-id {
+        font-weight: bold;
+        color: #198754;
+        font-size: 16px;
+    }
+
+    .customer-info {
+        line-height: 1.5;
+    }
+
+    .mobile {
+        color: #555;
+        font-size: 13px;
+    }
+
+    .date {
+        white-space: nowrap;
+        font-size: 13px;
+        color: #555;
+    }
+
+    .total {
+        font-size: 16px;
+        font-weight: bold;
+        color: #198754;
+        white-space: nowrap;
+    }
+
+    /* STATUS */
+
+    .status {
+        padding: 6px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+        display: inline-block;
+        white-space: nowrap;
+    }
+
+    .pending {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .confirmed {
+        background: #cff4fc;
+        color: #055160;
+    }
+
+    .preparing {
+        background: #e2e3ff;
+        color: #383d8f;
+    }
+
+    .delivery {
+        background: #cfe2ff;
+        color: #084298;
+    }
+
+    .pickup {
+        background: #e0cffc;
+        color: #59359a;
+    }
+
+    .delivered {
+        background: #d1e7dd;
+        color: #0f5132;
+    }
+
+    .cancelled {
+        background: #f8d7da;
+        color: #842029;
+    }
+
+    /* STATUS FORM */
+
+    .status-form {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
+
+    .status-form select {
+        min-width: 145px;
+        padding: 8px;
+        font-size: 13px;
+    }
+
+    .update-btn {
+        background: #198754;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 7px;
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    .update-btn:hover {
+        background: #157347;
+    }
+
+    /* VIEW ITEMS */
+
+    .view-btn {
+        background: #198754;
+        color: white;
+        text-decoration: none;
+        padding: 8px 14px;
+        border-radius: 7px;
+        font-size: 13px;
+        display: inline-block;
+        white-space: nowrap;
+    }
+
+    .view-btn:hover {
+        background: #157347;
+    }
+
+    .reset {
+        background: #6c757d;
+    }
+
+    .reset:hover {
+        background: #5c636a;
+    }
+
+    @media (max-width: 900px) {
+
+        .filters {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .status-form {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .status-form select {
+            min-width: 140px;
+        }
+    }
+
+    @media (max-width: 500px) {
+
+        .filters {
+            grid-template-columns: 1fr;
+        }
+
+        .container {
+            padding: 0 10px;
+        }
+
+        .table-box {
+            padding: 10px;
+        }
+    }
+</style>
+
+
+</head>
+
+<body>
+
+<div class="header">
+    <h1>📦 Manage Orders</h1>
+</div>
+
+<div class="container">
+
+
+<!-- FILTERS -->
+
+<div class="filter-box">
+
+    <form method="get">
+
+        <div class="filters">
+
+            <input
+                type="text"
+                name="search"
+                placeholder="Search Order ID / Customer / Mobile"
+                value="{{ search }}"
+            >
+
+
+            <select name="status">
+
+                <option value="">All Status</option>
+
+                {% for value, label in status_choices %}
+
+                    <option
+                        value="{{ value }}"
+                        {% if selected_status == value %}selected{% endif %}
+                    >
+                        {{ label }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <select name="delivery_type">
+
+                <option value="">All Delivery</option>
+
+                {% for value, label in delivery_choices %}
+
+                    <option
+                        value="{{ value }}"
+                        {% if selected_delivery == value %}selected{% endif %}
+                    >
+                        {{ label }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <select name="payment_method">
+
+                <option value="">All Payment</option>
+
+                {% for value, label in payment_choices %}
+
+                    <option
+                        value="{{ value }}"
+                        {% if selected_payment == value %}selected{% endif %}
+                    >
+                        {{ label }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <button type="submit">
+                Search
+            </button>
+
+        </div>
+
+    </form>
+
+
+    <br>
+
+
+    <a
+        href="{% url 'admin_orders' %}"
+        class="view-btn reset"
+    >
+        Reset Filters
+    </a>
+
+</div>
+
+
+<!-- ORDERS TABLE -->
+
+<div class="table-box">
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Order</th>
+
+                <th>Customer</th>
+
+                <th>Mobile</th>
+
+                <th>Delivery</th>
+
+                <th>Payment</th>
+
+                <th>Total</th>
+
+                <th>Current Status</th>
+
+                <th>Update Status</th>
+
+                <th>Date</th>
+
+                <th>View Items</th>
+
+            </tr>
+
+        </thead>
+
+
+        <tbody>
+
+        {% for order in orders %}
+
+            <tr>
+
+
+                <!-- ORDER -->
+
+                <td>
+
+                    <div class="order-id">
+                        #{{ order.id }}
+                    </div>
+
+                </td>
+
+
+                <!-- CUSTOMER -->
+
+                <td>
+
+                    <div class="customer-info">
+                        {{ order.customer_name }}
+                    </div>
+
+                </td>
+
+
+                <!-- MOBILE -->
+
+                <td>
+
+                    <div class="mobile">
+                        📱 {{ order.mobile }}
+                    </div>
+
+                </td>
+
+
+                <!-- DELIVERY -->
+
+                <td>
+
+                    {{ order.get_delivery_type_display }}
+
+                </td>
+
+
+                <!-- PAYMENT -->
+
+                <td>
+
+                    {{ order.get_payment_method_display }}
+
+                    <br>
+
+                    <small>
+                        {{ order.payment_status|title }}
+                    </small>
+
+                </td>
+
+
+                <!-- TOTAL -->
+
+                <td>
+
+                    <span class="total">
+                        ₹{{ order.total_amount|floatformat:2 }}
+                    </span>
+
+                </td>
+
+
+                <!-- CURRENT STATUS -->
+
+                <td>
+
+                    {% if order.order_status == "pending" %}
+
+                        <span class="status pending">
+                            Pending
+                        </span>
+
+                    {% elif order.order_status == "confirmed" %}
+
+                        <span class="status confirmed">
+                            Confirmed
+                        </span>
+
+                    {% elif order.order_status == "preparing" %}
+
+                        <span class="status preparing">
+                            Preparing
+                        </span>
+
+                    {% elif order.order_status == "out_for_delivery" %}
+
+                        <span class="status delivery">
+                            Out for Delivery
+                        </span>
+
+                    {% elif order.order_status == "ready_pickup" %}
+
+                        <span class="status pickup">
+                            Ready for Pickup
+                        </span>
+
+                    {% elif order.order_status == "delivered" %}
+
+                        <span class="status delivered">
+                            Delivered
+                        </span>
+
+                    {% elif order.order_status == "cancelled" %}
+
+                        <span class="status cancelled">
+                            Cancelled
+                        </span>
+
+                    {% else %}
+
+                        <span class="status confirmed">
+                            {{ order.get_order_status_display }}
+                        </span>
+
+                    {% endif %}
+
+                </td>
+
+
+                <!-- UPDATE STATUS -->
+
+                <td>
+
+                    <form
+                        method="post"
+                        action="{% url 'admin_order_status_update' order.id %}"
+                        class="status-form"
+                    >
+
+                        {% csrf_token %}
+
+                        <select name="order_status">
+
+                            {% for value, label in status_choices %}
+
+                                <option
+                                    value="{{ value }}"
+                                    {% if order.order_status == value %}selected{% endif %}
+                                >
+                                    {{ label }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+
+                        <button
+                            type="submit"
+                            class="update-btn"
+                        >
+                            Update
+                        </button>
+
+                    </form>
+
+                </td>
+
+
+                <!-- DATE -->
+
+                <td>
+
+                    <div class="date">
+                        {{ order.created_at|date:"d M Y, h:i A" }}
+                    </div>
+
+                </td>
+
+
+                <!-- VIEW ITEMS -->
+
+                <td>
+
+                    <a href="{% url 'admin_order_detail' order.id %}" class="view-btn">
+    View Items
+</a>
+
+                </td>
+
+
+            </tr>
+
+
+        {% empty %}
+
+            <tr>
+
+                <td
+                    colspan="10"
+                    style="text-align:center; padding:30px;"
+                >
+                    No orders found.
+                </td>
+
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+</div>
+
+</body>
+</html>

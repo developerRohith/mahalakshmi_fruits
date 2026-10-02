@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Cart - Mahalakshmi Pazhamuthirsolai</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+            color: #222;
+        }
+
+
+        header {
+            background: white;
+            padding: 18px 6%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        header a {
+            text-decoration: none;
+            color: #222;
+            font-weight: bold;
+        }
+
+
+        .container {
+            max-width: 950px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+
+        h1 {
+            margin-bottom: 25px;
+        }
+
+
+        .cart-item {
+            background: white;
+            padding: 18px;
+
+            margin-bottom: 15px;
+
+            border-radius: 14px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 20px;
+
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+
+        .cart-item img {
+            width: 100px;
+            height: 100px;
+
+            object-fit: cover;
+
+            border-radius: 12px;
+        }
+
+
+        .no-image {
+            width: 100px;
+            height: 100px;
+
+            background: #eee;
+
+            border-radius: 12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #888;
+
+            font-size: 13px;
+        }
+
+
+        .item-info {
+            flex: 1;
+        }
+
+
+        .item-info h3 {
+            margin-bottom: 8px;
+            font-size: 20px;
+        }
+
+
+        .price {
+            color: #666;
+            font-size: 15px;
+        }
+
+
+        .quantity-label {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #777;
+        }
+
+
+        .quantity-box {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            margin-top: 8px;
+        }
+
+
+        .qty-btn {
+            width: 34px;
+            height: 34px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #222;
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 7px;
+
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+
+        .qty-btn:hover {
+            background: #444;
+        }
+
+
+        .quantity {
+            min-width: 55px;
+
+            text-align: center;
+
+            font-weight: bold;
+
+            font-size: 16px;
+        }
+
+
+        .remove-btn {
+            display: inline-block;
+
+            margin-top: 10px;
+
+            color: #d00000;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: 600;
+        }
+
+
+        .remove-btn:hover {
+            text-decoration: underline;
+        }
+
+
+        .total {
+            min-width: 100px;
+
+            text-align: right;
+
+            font-weight: bold;
+
+            font-size: 18px;
+        }
+
+
+        .summary {
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 14px;
+
+            margin-top: 25px;
+
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+
+        .summary-row {
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-bottom: 15px;
+
+            font-size: 16px;
+        }
+
+
+        .grand-total {
+            font-size: 23px;
+
+            font-weight: bold;
+
+            border-top: 1px solid #ddd;
+
+            padding-top: 17px;
+
+            margin-top: 5px;
+        }
+
+
+        .checkout-btn {
+            display: block;
+
+            width: 100%;
+
+            margin-top: 20px;
+
+            padding: 15px;
+
+            background: #222;
+
+            color: white;
+
+            text-align: center;
+
+            text-decoration: none;
+
+            border-radius: 9px;
+
+            font-weight: bold;
+
+            font-size: 16px;
+        }
+
+
+        .checkout-btn:hover {
+            background: #444;
+        }
+
+
+        .shopping-row {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-top: 18px;
+        }
+
+
+        .continue {
+            text-decoration: none;
+
+            color: #222;
+
+            font-weight: bold;
+        }
+
+
+        .track {
+            text-decoration: none;
+
+            color: #555;
+
+            font-weight: 600;
+        }
+
+
+        .empty {
+            background: white;
+
+            padding: 60px 30px;
+
+            text-align: center;
+
+            border-radius: 14px;
+
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+
+        .empty h2 {
+            margin-bottom: 10px;
+        }
+
+
+        @media (max-width: 600px) {
+
+            header {
+                padding: 15px;
+            }
+
+
+            .container {
+                margin-top: 25px;
+
+                padding: 0 12px;
+            }
+
+
+            .cart-item {
+                padding: 12px;
+
+                gap: 12px;
+
+                align-items: flex-start;
+            }
+
+
+            .cart-item img,
+            .no-image {
+                width: 75px;
+                height: 75px;
+            }
+
+
+            .item-info h3 {
+                font-size: 17px;
+            }
+
+
+            .price {
+                font-size: 14px;
+            }
+
+
+            .total {
+                min-width: auto;
+
+                font-size: 16px;
+
+                padding-top: 5px;
+            }
+
+
+            .quantity-box {
+                gap: 8px;
+            }
+
+
+            .qty-btn {
+                width: 30px;
+                height: 30px;
+
+                font-size: 18px;
+            }
+
+
+            .quantity {
+                min-width: 45px;
+            }
+
+
+            .summary {
+                padding: 20px 16px;
+            }
+
+
+            .shopping-row {
+                flex-direction: column;
+
+                gap: 15px;
+
+                align-items: stretch;
+
+                text-align: center;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <a href="/">
+        🍎 Mahalakshmi Pazhamuthirsolai
+    </a>
+
+</header>
+
+
+<div class="container">
+
+
+    <h1>
+        🛒 Your Cart
+    </h1>
+
+
+    {% if cart_items %}
+
+
+        {% for item in cart_items %}
+
+
+            <div class="cart-item">
+
+
+                {% if item.product.image %}
+
+                    <img
+                        src="{{ item.product.image.url }}"
+                        alt="{{ item.product.name }}"
+                    >
+
+                {% else %}
+
+                    <div class="no-image">
+                        No Image
+                    </div>
+
+                {% endif %}
+
+
+                <div class="item-info">
+
+
+                    <h3>
+                        {{ item.product.name }}
+                    </h3>
+
+
+                    <div class="price">
+
+                        ₹{{ item.price|floatformat:2 }}
+
+                        {% if item.product.unit_type == "piece" %}
+
+                            / piece
+
+                        {% elif item.product.unit_type == "weight" %}
+
+                            / kg
+
+                        {% else %}
+
+                            / quantity
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="quantity-label">
+                        Quantity
+                    </div>
+
+
+                    <div class="quantity-box">
+
+
+                        <a
+                            href="{% url 'decrease_cart' item.product.id %}"
+                            class="qty-btn"
+                        >
+                            −
+                        </a>
+
+
+                        <span class="quantity">
+
+                            {% if item.product.unit_type == "weight" %}
+
+                                {% widthratio item.quantity 1 1000 %} g
+
+                            {% else %}
+
+                                {{ item.quantity }}
+
+                            {% endif %}
+
+                        </span>
+
+
+                        <a
+                            href="{% url 'increase_cart' item.product.id %}"
+                            class="qty-btn"
+                        >
+                            +
+                        </a>
+
+
+                    </div>
+
+
+                    <a
+                        href="{% url 'remove_from_cart' item.product.id %}"
+                        class="remove-btn"
+                    >
+                        🗑 Remove
+                    </a>
+
+
+                </div>
+
+
+                <div class="total">
+
+                    ₹{{ item.total|floatformat:2 }}
+
+                </div>
+
+
+            </div>
+
+
+        {% endfor %}
+
+
+        <div class="summary">
+
+
+            <div class="summary-row">
+
+                <span>
+                    Subtotal
+                </span>
+
+                <strong>
+                    ₹{{ subtotal|floatformat:2 }}
+                </strong>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span>
+                    Delivery
+                </span>
+
+                <strong>
+                    ₹0.00
+                </strong>
+
+            </div>
+
+
+            <div class="summary-row grand-total">
+
+                <span>
+                    Total
+                </span>
+
+                <strong>
+                    ₹{{ subtotal|floatformat:2 }}
+                </strong>
+
+            </div>
+
+
+            <a
+                href="{% url 'checkout' %}"
+                class="checkout-btn"
+            >
+                Proceed to Checkout →
+            </a>
+
+
+            <div class="shopping-row">
+
+
+                <a
+                    href="/"
+                    class="continue"
+                >
+                    ← Continue Shopping
+                </a>
+
+
+                <a
+                    href="/track-order/"
+                    class="track"
+                >
+                    📦 Track Order
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+
+    {% else %}
+
+
+        <div class="empty">
+
+
+            <h2>
+                Your cart is empty 🛒
+            </h2>
+
+
+            <p style="margin-top:10px;color:#777;">
+                Add some fresh fruits to your cart.
+            </p>
+
+
+            <a
+                href="/"
+                class="continue"
+                style="display:inline-block;margin-top:20px;"
+            >
+                ← Continue Shopping
+            </a>
+
+
+        </div>
+
+
+    {% endif %}
+
+
+</div>
+
+
+</body>
+
+</html>

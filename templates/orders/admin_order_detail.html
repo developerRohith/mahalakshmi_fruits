@@ -1,0 +1,500 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Order #{{ order.id }} - Admin</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #222;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 15px;
+        }
+
+        .top-bar h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 10px 16px;
+            background: #222;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .back-btn:hover {
+            background: #000;
+        }
+
+        .order-date {
+            color: #777;
+            margin-top: 6px;
+            font-size: 14px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+        }
+
+        .card h2 {
+            margin: 0 0 20px;
+            font-size: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 12px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .detail-label {
+            font-size: 13px;
+            color: #777;
+        }
+
+        .detail-value {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .address {
+            white-space: pre-line;
+            line-height: 1.5;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f7f8fa;
+            text-align: left;
+            padding: 13px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        td {
+            padding: 14px 13px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        .product-name {
+            font-weight: 600;
+        }
+
+        .price {
+            white-space: nowrap;
+        }
+
+        .payment-grid,
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .payment-method {
+            background: #eef4ff;
+            color: #2456a6;
+        }
+
+        .payment-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .payment-success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .summary {
+            max-width: 420px;
+            margin-left: auto;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            color: #555;
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #ddd;
+            margin-top: 8px;
+            padding-top: 15px;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+        }
+
+        @media (max-width: 700px) {
+
+            .container {
+                margin: 20px auto;
+                padding: 0 12px;
+            }
+
+            .top-bar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .top-bar h1 {
+                font-size: 23px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            .details-grid,
+            .payment-grid,
+            .status-grid {
+                grid-template-columns: 1fr;
+            }
+
+            th,
+            td {
+                padding: 10px;
+                white-space: nowrap;
+            }
+
+            .summary {
+                max-width: 100%;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+
+    <div class="top-bar">
+
+        <div>
+            <h1>Order #{{ order.id }}</h1>
+
+            <div class="order-date">
+                {{ order.created_at|date:"d M Y, h:i A" }}
+            </div>
+        </div>
+
+        <a href="{% url 'admin_orders' %}" class="back-btn">
+            ← Back to Manage Orders
+        </a>
+
+    </div>
+
+
+    <!-- CUSTOMER DETAILS -->
+
+    <div class="card">
+
+        <h2>Customer Details</h2>
+
+        <div class="details-grid">
+
+            <div class="detail-item">
+                <span class="detail-label">Name</span>
+                <span class="detail-value">
+                    {{ order.customer_name }}
+                </span>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">Mobile</span>
+                <span class="detail-value">
+                    {{ order.mobile }}
+                </span>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">Address</span>
+                <span class="detail-value address">
+                    {{ order.address|default:"-" }}
+                </span>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">City</span>
+                <span class="detail-value">
+                    {{ order.city|default:"-" }}
+                </span>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">Pincode</span>
+                <span class="detail-value">
+                    {{ order.pincode|default:"-" }}
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ORDER ITEMS -->
+
+    <div class="card">
+
+        <h2>Order Items</h2>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for item in order.items.all %}
+
+                    <tr>
+
+                        <td class="product-name">
+                            {{ item.product.name }}
+                        </td>
+
+                        <td>
+                            {{ item.quantity }}
+                        </td>
+
+                        <td class="price">
+                            ₹{{ item.price }}
+                        </td>
+
+                        <td class="price">
+                            ₹{{ item.total }}
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+                        <td colspan="4" class="empty">
+                            No items found.
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- PAYMENT -->
+
+    <div class="card">
+
+        <h2>Payment</h2>
+
+        <div class="payment-grid">
+
+            <div class="detail-item">
+
+                <span class="detail-label">
+                    Payment Method
+                </span>
+
+                <span>
+                    <span class="badge payment-method">
+                        {{ order.get_payment_method_display }}
+                    </span>
+                </span>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <span class="detail-label">
+                    Payment Status
+                </span>
+
+                <span>
+
+                    {% if order.payment_status == "pending" %}
+
+                        <span class="badge payment-pending">
+                            Payment Pending
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge payment-success">
+                            {{ order.payment_status|title }}
+                        </span>
+
+                    {% endif %}
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ORDER STATUS -->
+
+    <div class="card">
+
+        <h2>Order Status</h2>
+
+        <div class="status-grid">
+
+            <div class="detail-item">
+
+                <span class="detail-label">
+                    Current Status
+                </span>
+
+                <span>
+                    <span class="badge status">
+                        {{ order.get_order_status_display }}
+                    </span>
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- PRICE SUMMARY -->
+
+    <div class="card">
+
+        <h2>Price Summary</h2>
+
+        <div class="summary">
+
+            <div class="summary-row">
+
+                <span>Subtotal</span>
+
+                <strong>
+                    ₹{{ order.subtotal }}
+                </strong>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span>Delivery Charge</span>
+
+                <strong>
+                    ₹{{ order.delivery_charge }}
+                </strong>
+
+            </div>
+
+
+            <div class="summary-total">
+
+                <span>Total</span>
+
+                <span>
+                    ₹{{ order.total_amount }}
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

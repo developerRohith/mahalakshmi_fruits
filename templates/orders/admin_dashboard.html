@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Admin Dashboard - Mahalakshmi Pazhamuthirsolai
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 240px;
+            height: 100vh;
+            background: #198754;
+            color: white;
+            padding: 20px 15px;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo .icon {
+            font-size: 38px;
+        }
+
+        .logo h2 {
+            font-size: 18px;
+            margin: 8px 0 0;
+        }
+
+        .logo p {
+            font-size: 12px;
+            opacity: .8;
+            margin: 5px 0;
+        }
+
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .menu a {
+            color: white;
+            text-decoration: none;
+            padding: 12px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            display: block;
+        }
+
+        .menu a:hover {
+            background: rgba(255,255,255,.15);
+        }
+
+        .menu .active {
+            background: rgba(255,255,255,.2);
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 240px;
+            padding: 25px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .topbar h1 {
+            margin: 0;
+            font-size: 27px;
+        }
+
+        .website-btn {
+            background: #198754;
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        /* CARDS */
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 3px 12px rgba(0,0,0,.07);
+        }
+
+        .card-title {
+            color: #777;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .card-value {
+            font-size: 27px;
+            font-weight: bold;
+        }
+
+        .green {
+            color: #198754;
+        }
+
+        .orange {
+            color: #e09b00;
+        }
+
+        .blue {
+            color: #0d6efd;
+        }
+
+        /* QUICK ACTIONS */
+
+        .section {
+            background: white;
+            padding: 22px;
+            border-radius: 14px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 12px rgba(0,0,0,.07);
+        }
+
+        .section h2 {
+            margin-top: 0;
+            font-size: 20px;
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .action {
+            text-decoration: none;
+            color: #222;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 18px;
+            transition: .2s;
+        }
+
+        .action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,.08);
+        }
+
+        .action-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .action-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .action-text {
+            font-size: 12px;
+            color: #777;
+        }
+
+        /* RECENT ORDERS */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            white-space: nowrap;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-size: 13px;
+        }
+
+        td {
+            font-size: 13px;
+        }
+
+        .status {
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .confirmed {
+            background: #cff4fc;
+            color: #055160;
+        }
+
+        .preparing {
+            background: #e2e3ff;
+            color: #383d8f;
+        }
+
+        .delivery {
+            background: #cfe2ff;
+            color: #084298;
+        }
+
+        .delivered {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .cancelled {
+            background: #f8d7da;
+            color: #842029;
+        }
+
+        .manage-btn {
+            background: #198754;
+            color: white;
+            text-decoration: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 1100px) {
+
+            .cards {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .actions {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+                position: static;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 15px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                gap: 15px;
+                flex-direction: column;
+            }
+
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 450px) {
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <div class="logo">
+
+        <div class="icon">
+            🍎
+        </div>
+
+        <h2>
+            Mahalakshmi
+        </h2>
+
+        <p>
+            Pazhamuthirsolai
+        </p>
+
+    </div>
+
+
+    <div class="menu">
+
+        <a
+            href="{% url 'admin_dashboard' %}"
+            class="active"
+        >
+            🏠 Dashboard
+        </a>
+
+        <a href="{% url 'admin_orders' %}">
+            📦 Manage Orders
+        </a>
+
+        <a href="{% url 'admin_products' %}">
+    🍎 Products
+</a>
+
+<a href="{% url 'admin_categories' %}">
+    🗂️ Categories
+</a>
+
+        <a href="/admin/">
+            ⚙️ Django Admin
+        </a>
+
+        <a href="/">
+            🌐 Customer Website
+        </a>
+
+        <a href="{% url 'logout' %}">
+            🚪 Logout
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- MAIN -->
+
+<div class="main">
+
+
+    <div class="topbar">
+
+        <div>
+
+            <h1>
+                Dashboard
+            </h1>
+
+            <p>
+                Welcome back, {{ request.user.username }}
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'admin_orders' %}"
+            class="website-btn"
+        >
+            📦 View All Orders
+        </a>
+
+    </div>
+
+
+    <!-- SUMMARY CARDS -->
+
+<div class="cards">
+
+
+    <div class="card">
+
+        <div class="card-title">
+            📦 Today's Orders
+        </div>
+
+        <div class="card-value">
+            {{ today_orders }}
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-title">
+            💰 Today's Sales
+        </div>
+
+        <div class="card-value green">
+            ₹{{ today_sales|floatformat:2 }}
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-title">
+            ⏳ Pending Orders
+        </div>
+
+        <div class="card-value orange">
+            {{ pending_orders }}
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-title">
+            ✅ Delivered Orders
+        </div>
+
+        <div class="card-value green">
+            {{ delivered_orders }}
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-title">
+            🍎 Total Products
+        </div>
+
+        <div class="card-value blue">
+            {{ total_products }}
+        </div>
+
+    </div>
+
+
+    <!-- NEW: TOTAL SALES -->
+
+    <div class="card">
+
+        <div class="card-title">
+            💵 Total Sales
+        </div>
+
+        <div class="card-value green">
+            ₹{{ total_sales|floatformat:2 }}
+        </div>
+
+    </div>
+
+
+    <!-- NEW: TOTAL ORDERS -->
+
+    <div class="card">
+
+        <div class="card-title">
+            🧾 Total Orders
+        </div>
+
+        <div class="card-value blue">
+            {{ total_orders }}
+        </div>
+
+    </div>
+
+
+</div>
+
+
+    <!-- QUICK ACTIONS -->
+
+    <div class="section">
+
+        <h2>
+            Quick Actions
+        </h2>
+
+
+        <div class="actions">
+
+
+            <a
+                href="{% url 'admin_orders' %}"
+                class="action"
+            >
+
+                <div class="action-icon">
+                    📦
+                </div>
+
+                <div class="action-title">
+                    Manage Orders
+                </div>
+
+                <div class="action-text">
+                    View and filter customer orders
+                </div>
+
+            </a>
+
+
+            <a
+                href="/admin/products/product/add/"
+                class="action"
+            >
+
+                <div class="action-icon">
+                    🍎
+                </div>
+
+                <div class="action-title">
+                    Add Product
+                </div>
+
+                <div class="action-text">
+                    Add a new fruit product
+                </div>
+
+            </a>
+
+
+            <a
+                href="/admin/products/category/add/"
+                class="action"
+            >
+
+                <div class="action-icon">
+                    🗂️
+                </div>
+
+                <div class="action-title">
+                    Add Category
+                </div>
+
+                <div class="action-text">
+                    Create a product category
+                </div>
+
+            </a>
+
+
+            <a
+                href="/admin/"
+                class="action"
+            >
+
+                <div class="action-icon">
+                    ⚙️
+                </div>
+
+                <div class="action-title">
+                    Admin Panel
+                </div>
+
+                <div class="action-text">
+                    Manage complete database
+                </div>
+
+            </a>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- RECENT ORDERS -->
+
+    <div class="section">
+
+        <h2>
+            Recent Orders
+        </h2>
+
+
+        <div class="table-wrapper">
+
+            {% if recent_orders %}
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Order</th>
+                        <th>Customer</th>
+                        <th>Mobile</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                {% for order in recent_orders %}
+
+                    <tr>
+
+                        <td>
+                            #{{ order.id }}
+                        </td>
+
+                        <td>
+                            {{ order.customer_name }}
+                        </td>
+
+                        <td>
+                            {{ order.mobile }}
+                        </td>
+
+                        <td>
+                            ₹{{ order.total_amount|floatformat:2 }}
+                        </td>
+
+                        <td>
+
+                            {% if order.order_status == "pending" %}
+
+                                <span class="status pending">
+                                    Pending
+                                </span>
+
+                            {% elif order.order_status == "confirmed" %}
+
+                                <span class="status confirmed">
+                                    Confirmed
+                                </span>
+
+                            {% elif order.order_status == "preparing" %}
+
+                                <span class="status preparing">
+                                    Preparing
+                                </span>
+
+                            {% elif order.order_status == "out_for_delivery" %}
+
+                                <span class="status delivery">
+                                    Out for Delivery
+                                </span>
+
+                            {% elif order.order_status == "delivered" %}
+
+                                <span class="status delivered">
+                                    Delivered
+                                </span>
+
+                            {% elif order.order_status == "cancelled" %}
+
+                                <span class="status cancelled">
+                                    Cancelled
+                                </span>
+
+                            {% else %}
+
+                                <span class="status confirmed">
+                                    {{ order.get_order_status_display }}
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+                            {{ order.created_at|date:"d M Y, h:i A" }}
+                        </td>
+
+                        <td>
+
+                            <a
+                                href="{% url 'admin:orders_order_change' order.id %}"
+                                class="manage-btn"
+                            >
+                                Manage
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+            {% else %}
+
+                <p>
+                    No orders yet.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

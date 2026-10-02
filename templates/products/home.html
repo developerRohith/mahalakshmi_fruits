@@ -1,0 +1,1205 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mahalakshmi Pazhamuthirsolai</title>
+
+<style>
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: #f7f8f5;
+        color: #222;
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    /* HEADER */
+
+    .header {
+        background: #ffffff;
+        border-bottom: 1px solid #e5e5e5;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .nav {
+        max-width: 1200px;
+        margin: auto;
+        padding: 15px 20px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 20px;
+    }
+
+    .logo {
+        font-size: 22px;
+        font-weight: 800;
+        color: #16803c;
+        white-space: nowrap;
+    }
+
+    .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        flex-wrap: wrap;
+    }
+
+    .nav-links a {
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .nav-links a:hover {
+        color: #16803c;
+    }
+
+    /* HERO */
+
+    .hero {
+        max-width: 1200px;
+        margin: 25px auto;
+        padding: 35px 25px;
+
+        background: linear-gradient(
+            135deg,
+            #e8f7e9,
+            #fff8df
+        );
+
+        border-radius: 18px;
+        text-align: center;
+    }
+
+    .hero h1 {
+        margin: 0 0 10px;
+        font-size: 34px;
+        color: #16803c;
+    }
+
+    .hero p {
+        margin: 0;
+        color: #666;
+        font-size: 16px;
+    }
+
+    /* SEARCH */
+
+    .search-wrapper {
+        max-width: 700px;
+        margin: 25px auto;
+        padding: 0 20px;
+    }
+
+    .search-form {
+        display: flex;
+        gap: 10px;
+    }
+
+    .search-form input {
+        flex: 1;
+        padding: 13px 15px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        outline: none;
+        font-size: 15px;
+        background: white;
+    }
+
+    .search-form input:focus {
+        border-color: #16803c;
+    }
+
+    .search-form button {
+        border: none;
+        background: #16803c;
+        color: white;
+        padding: 0 22px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 700;
+    }
+
+    .search-form button:hover {
+        background: #116b31;
+    }
+
+    /* PRODUCT TYPE */
+
+    .section {
+        max-width: 1200px;
+        margin: 30px auto;
+        padding: 0 20px;
+    }
+
+    .section-title {
+        margin-bottom: 18px;
+        font-size: 24px;
+        color: #222;
+    }
+
+    .type-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+    }
+
+    .type-card {
+        background: white;
+        border: 2px solid #eeeeee;
+        border-radius: 15px;
+        padding: 22px;
+        text-align: center;
+        transition: 0.2s;
+    }
+
+    .type-card:hover {
+        transform: translateY(-2px);
+        border-color: #16803c;
+    }
+
+    .type-card.active {
+        border-color: #16803c;
+        background: #eef9f0;
+    }
+
+    .type-icon {
+        font-size: 40px;
+        margin-bottom: 8px;
+    }
+
+    .type-name {
+        font-size: 18px;
+        font-weight: 800;
+    }
+
+    .type-description {
+        margin-top: 5px;
+        color: #777;
+        font-size: 13px;
+    }
+
+    /* VIEW ALL */
+
+    .view-all-wrapper {
+        text-align: center;
+        margin-top: 18px;
+    }
+
+    .view-all {
+        display: inline-block;
+        padding: 10px 18px;
+        background: #16803c;
+        color: white;
+        border-radius: 9px;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    /* CATEGORIES */
+
+    .category-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 15px;
+    }
+
+    .category-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid #eee;
+        text-align: center;
+    }
+
+    .category-card img {
+        width: 100%;
+        height: 120px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .category-no-image {
+        height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f1f1f1;
+        font-size: 40px;
+    }
+
+    .category-name {
+        padding: 12px 8px;
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    /* PRODUCTS */
+
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+    }
+
+    .product-card {
+        background: white;
+        border: 1px solid #e7e7e7;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.04);
+    }
+
+    .product-image {
+        width: 100%;
+        height: 190px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .product-no-image {
+        width: 100%;
+        height: 190px;
+        background: #f1f1f1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 55px;
+    }
+
+    .product-content {
+        padding: 15px;
+    }
+
+    .product-name {
+        font-size: 18px;
+        font-weight: 800;
+        margin-bottom: 6px;
+    }
+
+    .product-description {
+        font-size: 13px;
+        color: #777;
+        min-height: 34px;
+        margin-bottom: 8px;
+    }
+
+    .product-price {
+        color: #16803c;
+        font-size: 20px;
+        font-weight: 800;
+        margin-bottom: 5px;
+    }
+
+    .stock {
+        font-size: 13px;
+        margin-bottom: 12px;
+    }
+
+    .stock.available {
+        color: #16803c;
+    }
+
+    .stock.unavailable {
+        color: #d93025;
+    }
+
+    /* WEIGHT */
+
+    .weight-box {
+        margin-bottom: 10px;
+    }
+
+    .weight-box label {
+        display: block;
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+
+    .weight-row {
+        display: flex;
+        gap: 7px;
+    }
+
+    .weight-row input,
+    .weight-row select {
+        width: 50%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 14px;
+        background: white;
+    }
+
+    /* CUSTOM QUANTITY */
+
+    .custom-quantity-box {
+        margin-bottom: 10px;
+    }
+
+    .custom-quantity-box label {
+        display: block;
+        margin-bottom: 7px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .custom-input-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .custom-input-row input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 16px;
+        outline: none;
+    }
+
+    .custom-input-row input:focus {
+        border-color: #16803c;
+    }
+
+    .custom-input-row span {
+        white-space: nowrap;
+        font-size: 14px;
+        color: #666;
+    }
+
+    /* BUTTON */
+
+    .add-btn {
+        width: 100%;
+        padding: 11px;
+        border: none;
+        border-radius: 9px;
+        background: #16803c;
+        color: white;
+        font-size: 14px;
+        font-weight: 800;
+        cursor: pointer;
+    }
+
+    .add-btn:hover {
+        background: #116b31;
+    }
+
+    .add-btn:disabled {
+        background: #aaa;
+        cursor: not-allowed;
+    }
+
+    /* EMPTY */
+
+    .empty-products {
+        background: white;
+        border: 1px solid #eee;
+        border-radius: 12px;
+        padding: 35px;
+        text-align: center;
+        color: #777;
+    }
+
+    /* FOOTER */
+
+    .footer {
+        margin-top: 50px;
+        padding: 25px 20px;
+        background: #173b24;
+        color: white;
+        text-align: center;
+    }
+
+    .footer p {
+        margin: 5px;
+        font-size: 14px;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 1000px) {
+
+        .product-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .category-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+    }
+
+    @media (max-width: 750px) {
+
+        .nav {
+            flex-direction: column;
+        }
+
+        .nav-links {
+            justify-content: center;
+        }
+
+        .hero h1 {
+            font-size: 27px;
+        }
+
+        .type-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .category-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .product-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+    }
+
+    @media (max-width: 480px) {
+
+        .nav-links {
+            gap: 10px;
+        }
+
+        .nav-links a {
+            font-size: 12px;
+        }
+
+        .search-form {
+            flex-direction: column;
+        }
+
+        .search-form button {
+            padding: 12px;
+        }
+
+        .product-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .category-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .product-image,
+        .product-no-image {
+            height: 220px;
+        }
+
+    }
+
+</style>
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<header class="header">
+
+
+<div class="nav">
+
+    <a href="/" class="logo">
+        🍎 Mahalakshmi Pazhamuthirsolai
+    </a>
+
+    <div class="nav-links">
+
+        <a href="/">Home</a>
+
+        <a href="/?type=fruits">Products</a>
+
+        <a href="{% url 'cart' %}">
+            🛒 Cart
+        </a>
+
+        <a href="{% url 'track_order' %}">
+            📦 Track Order
+        </a>
+
+        {% if request.user.is_authenticated %}
+
+            <a href="{% url 'my_orders' %}">
+                📋 My Orders
+            </a>
+
+            {% if request.user.is_staff %}
+                <a href="{% url 'admin_dashboard' %}">
+                    ⚙️ Admin
+                </a>
+            {% endif %}
+
+            <a href="{% url 'profile' %}">
+                👤 Profile
+            </a>
+
+        {% else %}
+
+            <a href="{% url 'login' %}">
+                Login
+            </a>
+
+            <a href="{% url 'register' %}">
+                Register
+            </a>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+</header>
+
+<!-- HERO -->
+
+<section class="hero">
+
+
+<h1>
+    Fresh Fruits Everyday 🍎
+</h1>
+
+<p>
+    Fresh fruits, eggs & snacks delivered to your doorstep.
+</p>
+
+
+</section>
+
+<!-- SEARCH -->
+
+<div class="search-wrapper">
+
+
+<form method="get" class="search-form">
+
+    {% if selected_product_type %}
+
+        <input
+            type="hidden"
+            name="type"
+            value="{{ selected_product_type }}"
+        >
+
+    {% endif %}
+
+    <input
+        type="text"
+        name="search"
+        value="{{ search }}"
+        placeholder="🔍 Search fruits, eggs, snacks..."
+    >
+
+    <button type="submit">
+        Search
+    </button>
+
+</form>
+
+
+</div>
+
+<!-- PRODUCT TYPES -->
+
+<section class="section">
+
+
+<h2 class="section-title">
+    Shop By Type
+</h2>
+
+<div class="type-grid">
+
+    <a
+        href="/?type=fruits"
+        class="type-card {% if selected_product_type == 'fruits' %}active{% endif %}"
+    >
+
+        <div class="type-icon">
+            🍎
+        </div>
+
+        <div class="type-name">
+            Fruits
+        </div>
+
+        <div class="type-description">
+            Fresh & Healthy Fruits
+        </div>
+
+    </a>
+
+
+    <a
+        href="/?type=eggs"
+        class="type-card {% if selected_product_type == 'eggs' %}active{% endif %}"
+    >
+
+        <div class="type-icon">
+            🥚
+        </div>
+
+        <div class="type-name">
+            Eggs
+        </div>
+
+        <div class="type-description">
+            Fresh Quality Eggs
+        </div>
+
+    </a>
+
+
+    <a
+        href="/?type=snacks"
+        class="type-card {% if selected_product_type == 'snacks' %}active{% endif %}"
+    >
+
+        <div class="type-icon">
+            🍘
+        </div>
+
+        <div class="type-name">
+            Snacks
+        </div>
+
+        <div class="type-description">
+            Traditional Tasty Snacks
+        </div>
+
+    </a>
+
+</div>
+
+
+{% if selected_product_type %}
+
+    <div class="view-all-wrapper">
+
+        <a href="/" class="view-all">
+            View All Products
+        </a>
+
+    </div>
+
+{% endif %}
+
+
+</section>
+
+<!-- CATEGORIES -->
+
+<section class="section">
+
+
+
+<h2 class="section-title">
+    Categories
+</h2>
+
+<div class="category-grid">
+
+    {% for category in categories %}
+
+        <div class="category-card">
+
+            {% if category.image %}
+
+                <img
+                    src="{{ category.image.url }}"
+                    alt="{{ category.name }}"
+                >
+
+            {% else %}
+
+                <div class="category-no-image">
+                    🛒
+                </div>
+
+            {% endif %}
+
+            <div class="category-name">
+                {{ category.name }}
+            </div>
+
+        </div>
+
+    {% empty %}
+
+        <div class="empty-products">
+            No categories available.
+        </div>
+
+    {% endfor %}
+
+</div>
+
+
+</section>
+
+<!-- PRODUCTS -->
+
+<section class="section">
+
+
+<h2 class="section-title">
+
+    {% if selected_product_type == "fruits" %}
+
+        🍎 Fruits
+
+    {% elif selected_product_type == "eggs" %}
+
+        🥚 Eggs
+
+    {% elif selected_product_type == "snacks" %}
+
+        🍘 Snacks
+
+    {% else %}
+
+        All Products
+
+    {% endif %}
+
+</h2>
+
+
+{% if products %}
+
+    <div class="product-grid">
+
+        {% for product in products %}
+
+            <div class="product-card">
+
+
+                <!-- PRODUCT IMAGE -->
+
+                {% if product.image %}
+
+                    <img
+                        src="{{ product.image.url }}"
+                        alt="{{ product.name }}"
+                        class="product-image"
+                    >
+
+                {% else %}
+
+                    <div class="product-no-image">
+
+                        {% if product.product_type == "eggs" %}
+                            🥚
+                        {% elif product.product_type == "snacks" %}
+                            🍘
+                        {% else %}
+                            🍎
+                        {% endif %}
+
+                    </div>
+
+                {% endif %}
+
+
+                <div class="product-content">
+
+
+                    <!-- NAME -->
+
+                    <div class="product-name">
+                        {{ product.name }}
+                    </div>
+
+
+                    <!-- DESCRIPTION -->
+
+                    <div class="product-description">
+
+                        {% if product.description %}
+
+                            {{ product.description|truncatechars:70 }}
+
+                        {% else %}
+
+                            Fresh quality product.
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- PRICE -->
+
+                    <div class="product-price">
+                        ₹{{ product.price|floatformat:2 }}
+                    </div>
+
+
+                    <!-- STOCK -->
+
+                    {% if product.stock > 0 %}
+
+                        <div class="stock available">
+
+                            In Stock:
+                            {{ product.stock|floatformat:0 }}
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="stock unavailable">
+
+                            Out of Stock
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <!-- WEIGHT PRODUCT -->
+
+                    {% if product.unit_type == "weight" %}
+
+
+                        {% if product.stock > 0 %}
+
+                            <div class="weight-box">
+
+                                <label>
+                                    Select Weight
+                                </label>
+
+                                <div class="weight-row">
+
+                                    <input
+                                        type="number"
+                                        id="weight-{{ product.id }}"
+                                        value="100"
+                                        min="1"
+                                        step="1"
+                                        placeholder="Weight"
+                                    >
+
+                                    <select
+                                        id="unit-{{ product.id }}"
+                                    >
+
+                                        <option value="g">
+                                            Grams
+                                        </option>
+
+                                        <option value="kg">
+                                            KG
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+
+                            <button
+                                class="add-btn"
+                                onclick="addWeightToCart({{ product.id }})"
+                            >
+                                🛒 Add to Cart
+                            </button>
+
+                        {% else %}
+
+                            <button
+                                class="add-btn"
+                                disabled
+                            >
+                                Out of Stock
+                            </button>
+
+                        {% endif %}
+
+
+                    <!-- CUSTOM QUANTITY PRODUCT -->
+
+                    {% elif product.unit_type == "custom" %}
+
+
+                        {% if product.stock > 0 %}
+
+                            <div class="custom-quantity-box">
+
+                                <label>
+                                    Quantity
+                                </label>
+
+                                <div class="custom-input-row">
+
+                                    <input
+                                        type="number"
+                                        id="custom-quantity-{{ product.id }}"
+                                        value="1"
+                                        min="1"
+                                        max="{{ product.stock|floatformat:0 }}"
+                                        step="1"
+                                    >
+
+                                    <span>
+                                        pieces
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <button
+                                class="add-btn"
+                                onclick="addCustomToCart({{ product.id }})"
+                            >
+                                🛒 Add to Cart
+                            </button>
+
+                        {% else %}
+
+                            <button
+                                class="add-btn"
+                                disabled
+                            >
+                                Out of Stock
+                            </button>
+
+                        {% endif %}
+
+
+                    <!-- PIECE PRODUCT -->
+
+                    {% else %}
+
+
+                        {% if product.stock > 0 %}
+
+                            <button
+                                class="add-btn"
+                                onclick="addPieceToCart({{ product.id }})"
+                            >
+                                🛒 Add to Cart
+                            </button>
+
+                        {% else %}
+
+                            <button
+                                class="add-btn"
+                                disabled
+                            >
+                                Out of Stock
+                            </button>
+
+                        {% endif %}
+
+
+                    {% endif %}
+
+
+                </div>
+
+            </div>
+
+
+        {% endfor %}
+
+    </div>
+
+
+{% else %}
+
+    <div class="empty-products">
+
+        {% if search %}
+
+            No products found for
+            <strong>"{{ search }}"</strong>.
+
+        {% elif selected_product_type %}
+
+            No products available in this category.
+
+        {% else %}
+
+            No products available.
+
+        {% endif %}
+
+    </div>
+
+{% endif %}
+
+
+</section>
+
+<!-- FOOTER -->
+
+<footer class="footer">
+
+
+    
+<p>
+    © 2026 Mahalakshmi Pazhamuthirsolai
+</p>
+
+<p>
+    Fresh Fruits • Eggs • Snacks
+</p>
+
+
+
+</footer>
+
+<!-- JAVASCRIPT -->
+
+<script>
+
+
+function addWeightToCart(productId) {
+
+    const weightInput =
+        document.getElementById(
+            "weight-" + productId
+        );
+
+    const unitInput =
+        document.getElementById(
+            "unit-" + productId
+        );
+
+
+    const quantity =
+        weightInput.value;
+
+    const unit =
+        unitInput.value;
+
+
+    if (
+        !quantity ||
+        Number(quantity) <= 0
+    ) {
+
+        alert(
+            "Please enter a valid weight."
+        );
+
+        return;
+
+    }
+
+
+    window.location.href =
+        "/cart/add/" +
+        productId +
+        "/?quantity=" +
+        encodeURIComponent(quantity) +
+        "&unit=" +
+        encodeURIComponent(unit);
+
+}
+
+
+function addCustomToCart(productId) {
+
+    const quantityInput =
+        document.getElementById(
+            "custom-quantity-" + productId
+        );
+
+
+    const quantity =
+        quantityInput.value;
+
+
+    if (
+        !quantity ||
+        Number(quantity) <= 0
+    ) {
+
+        alert(
+            "Please enter a valid quantity."
+        );
+
+        return;
+
+    }
+
+
+    const maxQuantity =
+        Number(quantityInput.max);
+
+
+    if (
+        maxQuantity &&
+        Number(quantity) > maxQuantity
+    ) {
+
+        alert(
+            "Maximum available quantity is " +
+            maxQuantity +
+            " pieces."
+        );
+
+        return;
+
+    }
+
+
+    window.location.href =
+        "/cart/add/" +
+        productId +
+        "/?quantity=" +
+        encodeURIComponent(quantity);
+
+}
+
+
+function addPieceToCart(productId) {
+
+    window.location.href =
+        "/cart/add/" +
+        productId +
+        "/";
+
+}
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Checkout - Mahalakshmi Pazhamuthirsolai</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+
+            font-family: Arial, sans-serif;
+
+            background: #f7f7f7;
+
+            color: #222;
+        }
+
+
+        header {
+            background: white;
+
+            padding: 18px 6%;
+
+            box-shadow:
+                0 2px 8px rgba(0,0,0,0.08);
+        }
+
+
+        header a {
+            text-decoration: none;
+
+            color: #222;
+
+            font-weight: bold;
+
+            font-size: 18px;
+        }
+
+
+        .container {
+            max-width: 1100px;
+
+            margin: 35px auto;
+
+            padding: 0 20px;
+        }
+
+
+        h1 {
+            margin-bottom: 25px;
+
+            font-size: 32px;
+        }
+
+
+        .checkout-grid {
+            display: grid;
+
+            grid-template-columns: 1.5fr 1fr;
+
+            gap: 25px;
+
+            align-items: start;
+        }
+
+
+        .box {
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 14px;
+
+            margin-bottom: 20px;
+
+            box-shadow:
+                0 2px 8px rgba(0,0,0,0.05);
+        }
+
+
+        .box h2 {
+            margin: 0 0 20px 0;
+
+            font-size: 20px;
+        }
+
+
+        label {
+            display: block;
+
+            margin-bottom: 6px;
+
+            font-weight: bold;
+
+            font-size: 14px;
+        }
+
+
+        input,
+        textarea {
+            width: 100%;
+
+            padding: 12px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 8px;
+
+            margin-bottom: 16px;
+
+            font-size: 15px;
+
+            outline: none;
+        }
+
+
+        input:focus,
+        textarea:focus {
+            border-color: #222;
+        }
+
+
+        textarea {
+            min-height: 95px;
+
+            resize: vertical;
+        }
+
+
+        .option {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 14px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 9px;
+
+            margin-bottom: 10px;
+
+            cursor: pointer;
+        }
+
+
+        .option:hover {
+            background: #fafafa;
+        }
+
+
+        .option input {
+            width: 18px;
+
+            height: 18px;
+
+            margin: 0;
+
+            cursor: pointer;
+        }
+
+
+        .option span {
+            font-weight: 600;
+
+            font-size: 15px;
+        }
+
+
+        .pickup-note {
+            display: none;
+
+            padding: 14px;
+
+            margin-top: 5px;
+
+            margin-bottom: 15px;
+
+            background: #f5f5f5;
+
+            border-radius: 8px;
+
+            color: #555;
+
+            font-size: 14px;
+        }
+
+
+        .payment-note {
+            display: none;
+
+            padding: 14px;
+
+            margin-top: 5px;
+
+            background: #f5f5f5;
+
+            border-radius: 8px;
+
+            color: #555;
+
+            font-size: 14px;
+        }
+
+
+        .error {
+            background: #fce8e8;
+
+            color: #a00000;
+
+            padding: 12px 15px;
+
+            border-radius: 8px;
+
+            margin-bottom: 20px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+        }
+
+
+        .product-row {
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 15px;
+
+            padding-bottom: 12px;
+
+            border-bottom: 1px solid #eee;
+        }
+
+
+        .product-name {
+            flex: 1;
+
+            font-size: 15px;
+        }
+
+
+        .product-price {
+            font-weight: bold;
+
+            white-space: nowrap;
+        }
+
+
+        .summary-item {
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 15px;
+
+            font-size: 16px;
+        }
+
+
+        .grand-total {
+            border-top: 1px solid #ddd;
+
+            padding-top: 17px;
+
+            margin-top: 5px;
+
+            font-size: 23px;
+
+            font-weight: bold;
+        }
+
+
+        .place-order {
+            width: 100%;
+
+            padding: 15px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background: #222;
+
+            color: white;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            margin-top: 8px;
+        }
+
+
+        .place-order:hover {
+            background: #444;
+        }
+
+
+        .back-cart {
+            display: block;
+
+            text-align: center;
+
+            margin-top: 15px;
+
+            color: #555;
+
+            text-decoration: none;
+
+            font-weight: 600;
+        }
+
+
+        .back-cart:hover {
+            text-decoration: underline;
+        }
+
+
+        @media (max-width: 750px) {
+
+            .checkout-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .container {
+                margin-top: 20px;
+
+                padding: 0 12px;
+            }
+
+
+            h1 {
+                font-size: 27px;
+            }
+
+
+            .box {
+                padding: 20px 16px;
+            }
+
+        }
+
+
+        @media (max-width: 450px) {
+
+            header {
+                padding: 15px;
+            }
+
+
+            header a {
+                font-size: 16px;
+            }
+
+
+            .product-row {
+                font-size: 14px;
+            }
+
+
+            .grand-total {
+                font-size: 21px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <a href="/">
+        🍎 Mahalakshmi Pazhamuthirsolai
+    </a>
+
+</header>
+
+
+<div class="container">
+
+
+    <h1>
+        Checkout
+    </h1>
+
+
+    {% if error %}
+
+        <div class="error">
+            {{ error }}
+        </div>
+
+    {% endif %}
+
+
+    <form
+        method="POST"
+        action="{% url 'checkout' %}"
+    >
+
+        {% csrf_token %}
+
+
+        <div class="checkout-grid">
+
+
+            <!-- LEFT SIDE -->
+
+            <div>
+
+
+                <!-- CUSTOMER DETAILS -->
+
+                <div class="box">
+
+                    <h2>
+                        👤 Customer Details
+                    </h2>
+
+
+                    <label>
+                        Full Name
+                    </label>
+
+                    <input
+    type="text"
+    name="customer_name"
+    placeholder="Enter your name"
+    value="{% if user.is_authenticated %}{{ user.username }}{% endif %}"
+    required
+>
+
+
+                    <label>
+                        Mobile Number
+                    </label>
+
+                    <input
+    type="tel"
+    name="mobile"
+    placeholder="Enter mobile number"
+    inputmode="numeric"
+    value="{% if profile %}{{ profile.mobile }}{% endif %}"
+    required
+>
+
+
+                    <label>
+                        Email
+                    </label>
+
+                    <input
+    type="email"
+    name="email"
+    placeholder="Enter email address"
+    value="{% if user.is_authenticated %}{{ user.email }}{% endif %}"
+>
+
+                </div>
+
+
+                <!-- DELIVERY METHOD -->
+
+                <div class="box">
+
+                    <h2>
+                        🚚 Delivery Method
+                    </h2>
+
+
+                    <label class="option">
+
+                        <input
+                            type="radio"
+                            name="delivery_type"
+                            value="delivery"
+                            checked
+                            onchange="changeDelivery()"
+                        >
+
+                        <span>
+                            🚚 Home Delivery
+                        </span>
+
+                    </label>
+
+
+                    <label class="option">
+
+                        <input
+                            type="radio"
+                            name="delivery_type"
+                            value="pickup"
+                            onchange="changeDelivery()"
+                        >
+
+                        <span>
+                            🏪 Shop Pickup
+                        </span>
+
+                    </label>
+
+
+                    <!-- DELIVERY FIELDS -->
+
+                    <div id="delivery-fields">
+
+
+                        <label>
+                            Delivery Address
+                        </label>
+
+                        <textarea
+                            name="address"
+                            id="address"
+                            placeholder="Enter your complete delivery address"
+                        ></textarea>
+
+
+                        <label>
+                            City
+                        </label>
+
+                        <input
+                            type="text"
+                            name="city"
+                            id="city"
+                            placeholder="Enter city"
+                        >
+
+
+                        <label>
+                            Pincode
+                        </label>
+
+                        <input
+                            type="text"
+                            name="pincode"
+                            id="pincode"
+                            placeholder="Enter pincode"
+                            inputmode="numeric"
+                        >
+
+                    </div>
+
+
+                    <!-- PICKUP MESSAGE -->
+
+                    <div
+                        class="pickup-note"
+                        id="pickup-note"
+                    >
+                        🏪 <strong>Shop Pickup Selected</strong>
+                        <br><br>
+                        You can collect your order directly
+                        from Mahalakshmi Pazhamuthirsolai.
+                    </div>
+
+                </div>
+
+
+                <!-- PAYMENT -->
+
+                <div class="box">
+
+                    <h2>
+                        💳 Payment Method
+                    </h2>
+
+
+                    <label class="option">
+
+                        <input
+                            type="radio"
+                            name="payment_method"
+                            value="cod"
+                            checked
+                            onchange="changePayment()"
+                        >
+
+                        <span>
+                            💵 Cash on Delivery
+                        </span>
+
+                    </label>
+
+
+                    <label class="option">
+
+                        <input
+                            type="radio"
+                            name="payment_method"
+                            value="online"
+                            onchange="changePayment()"
+                        >
+
+                        <span>
+                            💳 Online Payment
+                        </span>
+
+                    </label>
+
+
+                    <div
+                        class="payment-note"
+                        id="payment-note"
+                    >
+                        💳 Online payment will be available soon.
+                        <br>
+                        Please select <strong>Cash on Delivery</strong>
+                        to place the order now.
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- RIGHT SIDE -->
+
+            <div>
+
+
+                <div class="box">
+
+                    <h2>
+                        🧾 Order Summary
+                    </h2>
+
+
+                    {% for item in cart_items %}
+
+
+                        <div class="product-row">
+
+
+                            <div class="product-name">
+
+                                <strong>
+                                    {{ item.product.name }}
+                                </strong>
+
+                                <br>
+
+
+                                <small style="color:#777;">
+
+                                    {% if item.product.unit_type == "weight" %}
+
+                                        {{ item.display_quantity }}
+                                        {{ item.unit }}
+
+                                    {% else %}
+
+                                        Qty:
+                                        {{ item.quantity }}
+
+                                    {% endif %}
+
+                                </small>
+
+                            </div>
+
+
+                            <div class="product-price">
+
+                                ₹{{ item.total|floatformat:2 }}
+
+                            </div>
+
+
+                        </div>
+
+
+                    {% endfor %}
+
+
+                    <div class="summary-item">
+
+                        <span>
+                            Subtotal
+                        </span>
+
+                        <strong>
+                            ₹{{ subtotal|floatformat:2 }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-item">
+
+                        <span>
+                            Delivery Charge
+                        </span>
+
+                        <strong>
+                            ₹0.00
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-item grand-total">
+
+                        <span>
+                            Total
+                        </span>
+
+                        <strong>
+                            ₹{{ subtotal|floatformat:2 }}
+                        </strong>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="place-order"
+                    >
+                        ✅ Place Order
+                    </button>
+
+
+                    <a
+                        href="{% url 'cart' %}"
+                        class="back-cart"
+                    >
+                        ← Back to Cart
+                    </a>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </form>
+
+
+</div>
+
+
+<script>
+
+
+function changeDelivery() {
+
+    const delivery =
+        document.querySelector(
+            'input[name="delivery_type"]:checked'
+        ).value;
+
+
+    const deliveryFields =
+        document.getElementById(
+            "delivery-fields"
+        );
+
+
+    const pickupNote =
+        document.getElementById(
+            "pickup-note"
+        );
+
+
+    const address =
+        document.getElementById(
+            "address"
+        );
+
+
+    const city =
+        document.getElementById(
+            "city"
+        );
+
+
+    const pincode =
+        document.getElementById(
+            "pincode"
+        );
+
+
+    if (delivery === "pickup") {
+
+        deliveryFields.style.display = "none";
+
+        pickupNote.style.display = "block";
+
+        address.required = false;
+
+        city.required = false;
+
+        pincode.required = false;
+
+    } else {
+
+        deliveryFields.style.display = "block";
+
+        pickupNote.style.display = "none";
+
+        address.required = true;
+
+        city.required = true;
+
+        pincode.required = true;
+
+    }
+
+}
+
+
+function changePayment() {
+
+    const payment =
+        document.querySelector(
+            'input[name="payment_method"]:checked'
+        ).value;
+
+
+    const paymentNote =
+        document.getElementById(
+            "payment-note"
+        );
+
+
+    if (payment === "online") {
+
+        paymentNote.style.display = "block";
+
+    } else {
+
+        paymentNote.style.display = "none";
+
+    }
+
+}
+
+
+changeDelivery();
+
+changePayment();
+
+
+</script>
+
+
+</body>
+
+</html>

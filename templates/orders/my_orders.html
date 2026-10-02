@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Orders - Mahalakshmi Pazhamuthirsolai</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f6f8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .order-card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: #fff3cd;
+            color: #856404;
+            font-size: 14px;
+        }
+
+        .amount {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .view-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 16px;
+            background: #198754;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        .empty {
+            background: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>My Orders</h1>
+
+    {% if orders %}
+
+        {% for order in orders %}
+
+        <div class="order-card">
+
+            <div class="order-header">
+
+                <div>
+                    <strong>Order #{{ order.id }}</strong>
+                    <br>
+                    <small>
+                        {{ order.created_at|date:"d M Y, h:i A" }}
+                    </small>
+                </div>
+
+                <div class="status">
+                    {{ order.get_order_status_display }}
+                </div>
+
+            </div>
+
+            <hr>
+
+            <p>
+                <strong>Customer:</strong>
+                {{ order.customer_name }}
+            </p>
+
+            <p>
+                <strong>Payment:</strong>
+                {{ order.get_payment_method_display }}
+            </p>
+
+            <p>
+                <strong>Payment Status:</strong>
+                {{ order.payment_status|title }}
+            </p>
+
+            <p class="amount">
+                Total: ₹{{ order.total_amount }}
+            </p>
+
+            <a
+                href="{% url 'order_detail' order.id %}"
+                class="view-btn"
+            >
+                View Details
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+            <h2>No Orders Yet</h2>
+            <p>You haven't placed any orders yet.</p>
+
+            <a href="{% url 'home' %}">
+                Continue Shopping
+            </a>
+        </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

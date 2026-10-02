@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile - Mahalakshmi Pazhamuthirsolai</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+            color: #222;
+        }
+
+        header {
+            background: white;
+            padding: 18px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #222;
+            margin-left: 20px;
+            font-weight: 600;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 550px;
+            margin: 45px auto;
+        }
+
+        .profile-card {
+            background: white;
+            padding: 30px;
+            border-radius: 14px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            margin-bottom: 8px;
+        }
+
+        .username {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        form p {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 600;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: #267a3d;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d5e2e;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 18px;
+            color: #267a3d;
+            text-decoration: none;
+        }
+
+        @media (max-width: 600px) {
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            nav a {
+                margin: 0 7px;
+                font-size: 14px;
+            }
+
+            .container {
+                width: 94%;
+                margin: 25px auto;
+            }
+
+            .profile-card {
+                padding: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        🍎 Mahalakshmi Pazhamuthirsolai
+    </div>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/my-orders/">My Orders</a>
+        <a href="/cart/">🛒 Cart</a>
+    </nav>
+
+</header>
+
+
+<div class="container">
+
+    <div class="profile-card">
+
+        <h1>
+            My Profile
+        </h1>
+
+        <div class="username">
+            👤 {{ user.username }}
+        </div>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button type="submit">
+                Save Profile
+            </button>
+
+        </form>
+
+        <a href="/" class="back">
+            ← Back to Shopping
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

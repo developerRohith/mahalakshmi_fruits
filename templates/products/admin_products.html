@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Product Management - Mahalakshmi Pazhamuthirsolai
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        /* HEADER */
+
+        .header {
+            background: #198754;
+            color: white;
+            padding: 20px;
+        }
+
+        .header-inner {
+            max-width: 1400px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .header p {
+            margin: 5px 0 0;
+            opacity: .9;
+            font-size: 13px;
+        }
+
+        .add-btn {
+            background: white;
+            color: #198754;
+            text-decoration: none;
+            padding: 11px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* CONTAINER */
+
+        .container {
+            max-width: 1400px;
+            margin: 25px auto;
+            padding: 0 15px;
+        }
+
+        /* FILTER */
+
+        .filter-box {
+            background: white;
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 3px 12px rgba(0,0,0,.07);
+            margin-bottom: 20px;
+        }
+
+        .filters {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            gap: 10px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #198754;
+        }
+
+        .search-btn {
+            border: none;
+            background: #198754;
+            color: white;
+            padding: 11px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .reset-btn {
+            display: inline-block;
+            margin-top: 12px;
+            background: #6c757d;
+            color: white;
+            text-decoration: none;
+            padding: 8px 13px;
+            border-radius: 7px;
+            font-size: 13px;
+        }
+
+        /* PRODUCTS */
+
+        .products-box {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 3px 12px rgba(0,0,0,.07);
+        }
+
+        .products-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .products-title h2 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .count {
+            color: #777;
+            font-size: 13px;
+        }
+
+        /* TABLE */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1100px;
+        }
+
+        th,
+        td {
+            padding: 13px 10px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-size: 13px;
+        }
+
+        td {
+            font-size: 13px;
+        }
+
+        /* IMAGE */
+
+        .product-image {
+            width: 58px;
+            height: 58px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid #eee;
+        }
+
+        .no-image {
+            width: 58px;
+            height: 58px;
+            border-radius: 10px;
+            background: #f1f3f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .product-name {
+            font-weight: bold;
+        }
+
+        .description {
+            max-width: 250px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #777;
+        }
+
+        /* STATUS */
+
+        .status {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .available {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .unavailable {
+            background: #f8d7da;
+            color: #842029;
+        }
+
+        .low-stock {
+            background: #fff3cd;
+            color: #664d03;
+        }
+
+        /* UNIT */
+
+        .unit {
+            background: #e9ecef;
+            padding: 5px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+        }
+
+        /* STOCK */
+
+        .stock-number {
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .stock-form {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .stock-input {
+            width: 75px;
+            padding: 7px !important;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        .stock-btn {
+            background: #198754;
+            color: white;
+            border: none;
+            padding: 7px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .stock-btn:hover {
+            background: #157347;
+        }
+
+        /* BUTTONS */
+
+        .actions {
+            display: flex;
+            gap: 7px;
+            align-items: center;
+        }
+
+        .action-btn {
+            text-decoration: none;
+            padding: 7px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .toggle-btn {
+            background: #0d6efd;
+            color: white;
+        }
+
+        .edit-btn {
+            background: #ffc107;
+            color: #222;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        /* EMPTY */
+
+        .empty {
+            text-align: center;
+            padding: 50px 20px;
+            color: #777;
+        }
+
+        .empty-icon {
+            font-size: 45px;
+            margin-bottom: 10px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 900px) {
+
+            .filters {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .header-inner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .filters {
+                grid-template-columns: 1fr;
+            }
+
+            .products-box {
+                padding: 12px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- HEADER -->
+
+<div class="header">
+
+    <div class="header-inner">
+
+        <div>
+
+            <h1>
+                🍎 Product Management
+            </h1>
+
+            <p>
+                Mahalakshmi Pazhamuthirsolai
+            </p>
+
+        </div>
+
+
+        <a
+            href="/admin/products/product/add/"
+            class="add-btn"
+        >
+            + Add Product
+        </a>
+
+    </div>
+
+</div>
+
+
+<div class="container">
+
+
+    <!-- FILTER -->
+
+    <div class="filter-box">
+
+        <form method="get">
+
+            <div class="filters">
+
+                <input
+                    type="text"
+                    name="search"
+                    placeholder="Search product..."
+                    value="{{ search }}"
+                >
+
+
+                <select name="category">
+
+                    <option value="">
+                        All Categories
+                    </option>
+
+                    {% for category in categories %}
+
+                        <option
+                            value="{{ category.id }}"
+                            {% if selected_category == category.id|stringformat:"s" %}
+                                selected
+                            {% endif %}
+                        >
+                            {{ category.name }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+
+                <select name="availability">
+
+                    <option value="">
+                        All Products
+                    </option>
+
+                    <option
+                        value="available"
+                        {% if selected_availability == "available" %}
+                            selected
+                        {% endif %}
+                    >
+                        Available
+                    </option>
+
+                    <option
+                        value="unavailable"
+                        {% if selected_availability == "unavailable" %}
+                            selected
+                        {% endif %}
+                    >
+                        Unavailable
+                    </option>
+
+                </select>
+
+
+                <button
+                    type="submit"
+                    class="search-btn"
+                >
+                    Search
+                </button>
+
+            </div>
+
+        </form>
+
+
+        <a
+            href="{% url 'admin_products' %}"
+            class="reset-btn"
+        >
+            Reset Filters
+        </a>
+
+    </div>
+
+
+    <!-- PRODUCTS -->
+
+    <div class="products-box">
+
+
+        <div class="products-title">
+
+            <h2>
+                Products
+            </h2>
+
+            <div class="count">
+                {{ products|length }} product(s)
+            </div>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            {% if products %}
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Image
+                        </th>
+
+                        <th>
+                            Product
+                        </th>
+
+                        <th>
+                            Category
+                        </th>
+
+                        <th>
+                            Unit
+                        </th>
+
+                        <th>
+                            Price
+                        </th>
+
+                        <th>
+                            Stock
+                        </th>
+
+                        <th>
+                            Stock Status
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                {% for product in products %}
+
+                    <tr>
+
+
+                        <!-- IMAGE -->
+
+                        <td>
+
+                            {% if product.image %}
+
+                                <img
+                                    src="{{ product.image.url }}"
+                                    class="product-image"
+                                    alt="{{ product.name }}"
+                                >
+
+                            {% else %}
+
+                                <div class="no-image">
+                                    🍎
+                                </div>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- PRODUCT -->
+
+                        <td>
+
+                            <div class="product-name">
+                                {{ product.name }}
+                            </div>
+
+                            {% if product.description %}
+
+                                <div class="description">
+                                    {{ product.description }}
+                                </div>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- CATEGORY -->
+
+                        <td>
+                            {{ product.category.name }}
+                        </td>
+
+
+                        <!-- UNIT -->
+
+                        <td>
+
+                            <span class="unit">
+
+                                {% if product.unit_type == "piece" %}
+                                    Piece
+                                {% elif product.unit_type == "weight" %}
+                                    Weight
+                                {% elif product.unit_type == "custom" %}
+                                    Custom
+                                {% else %}
+                                    {{ product.unit_type }}
+                                {% endif %}
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- PRICE -->
+
+                        <td>
+                            ₹{{ product.price|floatformat:2 }}
+                        </td>
+
+
+                        <!-- STOCK -->
+
+<td>
+
+    <span class="stock-number">
+        {{ product.stock|floatformat:2z }}
+    </span>
+
+    <span class="unit">
+
+        {% if product.stock_unit == "piece" %}
+            Pieces
+        {% elif product.stock_unit == "g" %}
+            g
+        {% elif product.stock_unit == "kg" %}
+            kg
+        {% else %}
+            {{ product.stock_unit }}
+        {% endif %}
+
+    </span>
+
+</td>
+
+
+                        <!-- STOCK STATUS -->
+
+                        <td>
+
+                            {% if product.stock <= 0 %}
+
+                                <span class="status unavailable">
+                                    Out of Stock
+                                </span>
+
+                            {% elif product.stock <= 5 %}
+
+                                <span class="status low-stock">
+                                    Low Stock
+                                </span>
+
+                            {% else %}
+
+                                <span class="status available">
+                                    In Stock
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- PRODUCT STATUS -->
+
+                        <td>
+
+                            {% if product.is_available %}
+
+                                <span class="status available">
+                                    Available
+                                </span>
+
+                            {% else %}
+
+                                <span class="status unavailable">
+                                    Unavailable
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- ACTIONS -->
+
+                        <td>
+
+                            <div class="actions">
+
+
+                                <!-- STOCK UPDATE -->
+
+                                <form
+                                    method="post"
+                                    action="{% url 'admin_product_stock_update' product.id %}"
+                                    class="stock-form"
+                                >
+
+                                    {% csrf_token %}
+
+                                    <input
+                                        type="number"
+                                        name="stock"
+                                        value="{{ product.stock }}"
+                                        min="0"
+                                        step="0.01"
+                                        class="stock-input"
+                                    >
+
+                                    <button
+                                        type="submit"
+                                        class="stock-btn"
+                                    >
+                                        Stock
+                                    </button>
+
+                                </form>
+
+
+                                <!-- TOGGLE -->
+
+                                <a
+                                    href="{% url 'admin_product_toggle' product.id %}"
+                                    class="action-btn toggle-btn"
+                                >
+
+                                    {% if product.is_available %}
+                                        Disable
+                                    {% else %}
+                                        Enable
+                                    {% endif %}
+
+                                </a>
+
+
+                                <!-- EDIT -->
+
+                                <a
+                                    href="/admin/products/product/{{ product.id }}/change/"
+                                    class="action-btn edit-btn"
+                                >
+                                    Edit
+                                </a>
+
+
+                                <!-- DELETE -->
+
+                                <form
+                                    method="post"
+                                    action="{% url 'admin_product_delete' product.id %}"
+                                    onsubmit="return confirm('Delete {{ product.name }}?');"
+                                    style="display:inline;"
+                                >
+
+                                    {% csrf_token %}
+
+                                    <button
+                                        type="submit"
+                                        class="action-btn delete-btn"
+                                    >
+                                        Delete
+                                    </button>
+
+                                </form>
+
+
+                            </div>
+
+                        </td>
+
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+
+            {% else %}
+
+                <div class="empty">
+
+                    <div class="empty-icon">
+                        🍎
+                    </div>
+
+                    <h3>
+                        No Products Found
+                    </h3>
+
+                    <p>
+                        Try changing your search or filter.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>
